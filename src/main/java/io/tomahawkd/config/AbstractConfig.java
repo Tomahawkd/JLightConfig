@@ -1,7 +1,6 @@
 package io.tomahawkd.config;
 
 import io.tomahawkd.config.annotation.HiddenField;
-import io.tomahawkd.config.annotation.SourceFrom;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -16,7 +15,6 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 
 	public AbstractConfig() {
 		delegates = new ArrayList<>();
-		SourceFrom anno = this.getClass().getAnnotation(SourceFrom.class);
 	}
 
 	@Override
