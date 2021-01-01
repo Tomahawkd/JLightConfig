@@ -49,7 +49,7 @@ public class ConfigManager {
 
 							// add delegates to config
 							config.initComponents(delegates.stream()
-									.filter(d -> config.getClass().equals(d.getAnnotation(BelongsTo.class).config()))
+									.filter(d -> config.getClass().equals(d.getAnnotation(BelongsTo.class).value()))
 									.collect(Collectors.toSet()));
 
 							return config;
@@ -115,7 +115,7 @@ public class ConfigManager {
 		BelongsTo annotation = type.getAnnotation(BelongsTo.class);
 		if (annotation == null) return null;
 		for (Config config : getConfigs()) {
-			if (config.getClass().equals(annotation.config())) {
+			if (config.getClass().equals(annotation.value())) {
 				return config.getDelegateByType(type);
 			}
 		}
