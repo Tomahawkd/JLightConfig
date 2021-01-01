@@ -9,8 +9,8 @@ import org.reflections.util.ClasspathHelper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,42 +23,43 @@ public class ConfigManager {
 		return new ConfigManager(null);
 	}
 
-	public static ConfigManager get(@Nullable List<ClassLoader> classLoaders) {
+	public static ConfigManager get(@Nullable Collection<ClassLoader> classLoaders) {
 		return new ConfigManager(classLoaders);
 	}
 
-	private ConfigManager(@Nullable List<ClassLoader> classLoaders) {
-		if (!ManagerInstance.INSTANCE.initialized) {
+	private ConfigManager(@Nullable Collection<ClassLoader> classLoaders) {
 
-			if (classLoaders != null) {
-				ManagerInstance.INSTANCE.classLoaders.addAll(classLoaders);
-			}
-			Set<Class<? extends ConfigDelegate>> delegates = ClassManager.getManager(classLoaders)
-					.loadClassesWithAnnotation(ConfigDelegate.class, null, BelongsTo.class);
+		// skip initialization if already initialized
+		if (ManagerInstance.INSTANCE.initialized) return;
 
-			ClassManager.getManager(classLoaders).loadClasses(AbstractConfig.class, null).stream()
-					// filter abstract classes
-					.filter(c -> !Modifier.isAbstract(c.getModifiers()))
-					.map(c -> {
-
-						try {
-							// construct config
-							Constructor<? extends AbstractConfig> constructor = c.getDeclaredConstructor();
-							constructor.setAccessible(true);
-							AbstractConfig config = constructor.newInstance();
-
-							// add delegates to config
-							config.initComponents(delegates.stream()
-									.filter(d -> config.getClass().equals(d.getAnnotation(BelongsTo.class).value()))
-									.collect(Collectors.toSet()));
-
-							return config;
-						} catch (InstantiationException | InvocationTargetException |
-								NoSuchMethodException | IllegalAccessException e) {
-							throw new RuntimeException("Construct config " + c.getName() + " failed.", e);
-						}
-					}).forEach(ManagerInstance.INSTANCE.configs::add);
+		if (classLoaders != null) {
+			ManagerInstance.INSTANCE.classLoaders.addAll(classLoaders);
 		}
+		Set<Class<? extends ConfigDelegate>> delegates = ClassManager.createManager(classLoaders)
+				.loadClassesWithAnnotation(ConfigDelegate.class, null, BelongsTo.class);
+
+		ClassManager.createManager(classLoaders).loadClasses(AbstractConfig.class, null).stream()
+				// filter abstract classes
+				.filter(c -> !Modifier.isAbstract(c.getModifiers()))
+				.map(c -> {
+
+					try {
+						// construct config
+						Constructor<? extends AbstractConfig> constructor = c.getDeclaredConstructor();
+						constructor.setAccessible(true);
+						AbstractConfig config = constructor.newInstance();
+
+						// add delegates to config
+						config.initComponents(delegates.stream()
+								.filter(d -> config.getClass().equals(d.getAnnotation(BelongsTo.class).value()))
+								.collect(Collectors.toSet()));
+
+						return config;
+					} catch (InstantiationException | InvocationTargetException |
+							NoSuchMethodException | IllegalAccessException e) {
+						throw new RuntimeException("Construct config " + c.getName() + " failed.", e);
+					}
+				}).forEach(ManagerInstance.INSTANCE.configs::add);
 	}
 
 	private enum ManagerInstance {
@@ -131,7 +132,7 @@ public class ConfigManager {
 	@SuppressWarnings("unchecked")
 	@Nullable
 	public ConfigDelegate getDelegateByString(String type) {
-		Class<?> c = ClassManager.getManager(ManagerInstance.INSTANCE.classLoaders).loadClass(type);
+		Class<?> c = ClassManager.createManager(ManagerInstance.INSTANCE.classLoaders).loadClass(type);
 		if (c == null || ConfigDelegate.class.isAssignableFrom(c)) return null;
 		return getDelegateByType((Class<? extends ConfigDelegate>) c);
 	}
