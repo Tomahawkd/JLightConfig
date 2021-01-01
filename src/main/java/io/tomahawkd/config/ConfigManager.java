@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Entry for arg processing.
+ * Entry for config processing.
  */
 public class ConfigManager {
 
@@ -60,6 +60,8 @@ public class ConfigManager {
 						throw new RuntimeException("Construct config " + c.getName() + " failed.", e);
 					}
 				}).forEach(ManagerInstance.INSTANCE.configs::add);
+
+		ManagerInstance.INSTANCE.initialized = true;
 	}
 
 	private enum ManagerInstance {
@@ -75,7 +77,6 @@ public class ConfigManager {
 			classLoaders = new HashSet<>();
 			classLoaders.add(ClasspathHelper.staticClassLoader());
 			classLoaders.add(ClasspathHelper.contextClassLoader());
-			initialized = true;
 		}
 	}
 
@@ -126,7 +127,7 @@ public class ConfigManager {
 	/**
 	 * Delegate method to {@link Config#getDelegateByString(String)}
 	 *
-	 * @param type full name type string including package
+	 * @param type <b>full name</b> type string including package
 	 * @return delegate or null if not found
 	 */
 	@SuppressWarnings("unchecked")
