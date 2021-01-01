@@ -1,6 +1,9 @@
 package io.tomahawkd.config;
 
 import io.tomahawkd.config.annotation.HiddenField;
+import io.tomahawkd.config.annotation.SourceFrom;
+import io.tomahawkd.config.sources.Source;
+import io.tomahawkd.config.sources.SourceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,6 +18,10 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 
 	public AbstractConfig() {
 		delegates = new ArrayList<>();
+		if (this.getClass().getAnnotation(SourceFrom.class) == null) {
+			throw new RuntimeException(
+					"Annotation SourceFrom not found in this class(" + this.getClass().getName() + ")");
+		}
 	}
 
 	@Override
@@ -44,13 +51,39 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 	}
 
 	@Override
-	public void postParsing() {
+	public final void preConfig() {
+		selfPreConfig();
+		for (ConfigDelegate delegate : getDelegates()) {
+			delegate.preConfig();
+		}
+	}
+
+	protected void selfPreConfig() {
+	}
+
+	@Override
+	public final void parse() {
+		preConfig();
+		parse(SourceManager.get().getSource(
+				this.getClass().getAnnotation(SourceFrom.class).value()));
+		postParsing();
+	}
+
+	protected abstract void parse(@NotNull Source source);
+
+	@Override
+	public final void postParsing() {
+		selfPostParsing();
 		for (ConfigDelegate delegate : getDelegates()) {
 			delegate.postParsing();
 		}
 	}
 
-	protected final List<ConfigDelegate> getDelegates() {
+	protected void selfPostParsing() {
+	}
+
+	@Override
+	public final List<ConfigDelegate> getDelegates() {
 		return delegates;
 	}
 

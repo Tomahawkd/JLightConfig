@@ -9,9 +9,7 @@ import org.reflections.util.ClasspathHelper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -68,12 +66,12 @@ public class ConfigManager {
 
 		INSTANCE;
 
-		private final Set<Config> configs;
+		private final List<Config> configs;
 		private final Set<ClassLoader> classLoaders;
 		private boolean initialized = false;
 
 		ManagerInstance() {
-			configs = new HashSet<>();
+			configs = new ArrayList<>();
 			classLoaders = new HashSet<>();
 			classLoaders.add(ClasspathHelper.staticClassLoader());
 			classLoaders.add(ClasspathHelper.contextClassLoader());
@@ -94,8 +92,23 @@ public class ConfigManager {
 	 *
 	 * @return config
 	 */
-	public Set<Config> getConfigs() {
+	public List<Config> getConfigs() {
 		return ManagerInstance.INSTANCE.configs;
+	}
+
+	/**
+	 * Get specific config type of the config
+	 *
+	 * @param configClazz specific type class
+	 * @param <T> type
+	 * @return the config or null if not found
+	 */
+	@Nullable
+	@SuppressWarnings("unchecked")
+	public <T extends Config> T getConfig(Class<T> configClazz) {
+		return (T) ManagerInstance.INSTANCE.configs.stream()
+				.filter(c -> c.getClass().equals(configClazz))
+				.findFirst().orElse(null);
 	}
 
 	/**

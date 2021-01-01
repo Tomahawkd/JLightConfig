@@ -3,6 +3,7 @@ package io.tomahawkd.config;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -16,6 +17,12 @@ public interface Config {
 	 * @param delegate arg parsing delegate
 	 */
 	void addDelegate(@NotNull ConfigDelegate delegate);
+
+	/**
+	 * Get all delegates
+	 * @return delegates list
+	 */
+	List<ConfigDelegate> getDelegates();
 
 	/**
 	 * Get specific delegate by type.
