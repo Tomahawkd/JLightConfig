@@ -125,14 +125,17 @@ Example:
 
 ```java
 class Test {
+  // args: --help
   public static void main(String[] args) {
     SourceManager sourceManager = SourceManager.get();
     ConfigManager configManager = ConfigManager.get();
 
     sourceManager.getSource(CommandlineSource.class).setData(args);
     configManager.parse();
+    
+    // you would get true
     configManager.getConfig(CommandlineConfig.class)
-        .getDelegateByType(TestDelegate.class).isHelp()
+        .getDelegateByType(TestDelegate.class).isHelp();
   }
 }
 ```
