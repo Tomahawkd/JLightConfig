@@ -17,7 +17,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/tomahawkd/JLightConfig</url>
+			<url>https://maven.pkg.github.com/Tomahawkd/JLightConfig</url>
 		</repository>
 	</distributionManagement>
 	
