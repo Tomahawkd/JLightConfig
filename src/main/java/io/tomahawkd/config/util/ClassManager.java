@@ -16,7 +16,7 @@ public class ClassManager {
 
 	private final Set<ClassLoader> classLoadersList;
 
-	public static ClassManager getManager(@Nullable Collection<ClassLoader> classLoaders) {
+	public static ClassManager createManager(@Nullable Collection<ClassLoader> classLoaders) {
 		if (classLoaders == null) return new ClassManager();
 		else return new ClassManager(classLoaders);
 	}
