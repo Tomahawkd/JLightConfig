@@ -7,16 +7,38 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+/**
+ * Entry for Source management
+ */
 public class SourceManager {
 
+	/**
+	 * Get source manager with default classloaders.
+	 *
+	 * @return source manager
+	 */
 	public static SourceManager get() {
 		return new SourceManager(null);
 	}
 
+	/**
+	 * Get source manager with specific classloaders
+	 *
+	 * Be aware that if it is already initialized, the newly passed classloader list
+	 * could be ignored.
+	 *
+	 * @param classLoaders classloader list
+	 * @return source manager
+	 */
 	public static SourceManager get(Collection<ClassLoader> classLoaders) {
 		return new SourceManager(classLoaders);
 	}
 
+	/**
+	 * Source manager constructor
+	 *
+	 * @param classLoaders classloader list
+	 */
 	private SourceManager(Collection<ClassLoader> classLoaders) {
 		// skip initialization if already initialized
 		if (SourceManager.ManagerInstance.INSTANCE.initialized) return;
@@ -40,6 +62,9 @@ public class SourceManager {
 		ManagerInstance.INSTANCE.initialized = true;
 	}
 
+	/**
+	 * Internal data instance (Singleton)
+	 */
 	private enum ManagerInstance {
 		INSTANCE;
 
@@ -51,10 +76,21 @@ public class SourceManager {
 		}
 	}
 
+	/**
+	 * Get source list
+	 * @return source list
+	 */
 	public List<Source> getSources() {
 		return ManagerInstance.INSTANCE.sources;
 	}
 
+	/**
+	 * Get specific source type of the config
+	 *
+	 * @param sourceClazz specific type class
+	 * @param <T> type
+	 * @return the source or null if not found
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Source> T getSource(Class<T> sourceClazz) throws NoSuchElementException {
 		return (T) ManagerInstance.INSTANCE.sources.stream()

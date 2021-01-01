@@ -17,14 +17,33 @@ import java.util.stream.Collectors;
  */
 public class ConfigManager {
 
+	/**
+	 * Get config manager with default classloaders.
+	 *
+	 * @return config manager
+	 */
 	public static ConfigManager get() {
 		return new ConfigManager(null);
 	}
 
+	/**
+	 * Get config manager with specific classloaders
+	 *
+	 * Be aware that if it is already initialized, the newly passed classloader list
+	 * could be ignored.
+	 *
+	 * @param classLoaders classloader list
+	 * @return config manager
+	 */
 	public static ConfigManager get(@Nullable Collection<ClassLoader> classLoaders) {
 		return new ConfigManager(classLoaders);
 	}
 
+	/**
+	 * Config manager constructor
+	 *
+	 * @param classLoaders classloader list
+	 */
 	private ConfigManager(@Nullable Collection<ClassLoader> classLoaders) {
 
 		// skip initialization if already initialized
@@ -59,9 +78,13 @@ public class ConfigManager {
 					}
 				}).forEach(ManagerInstance.INSTANCE.configs::add);
 
+		// set status to initialized
 		ManagerInstance.INSTANCE.initialized = true;
 	}
 
+	/**
+	 * Internal data instance (Singleton)
+	 */
 	private enum ManagerInstance {
 
 		INSTANCE;
@@ -119,7 +142,7 @@ public class ConfigManager {
 	}
 
 	/**
-	 * Delegate method to {@link Config#getDelegateByType(Class)}
+	 * Get delegate with class type
 	 *
 	 * @param type Class of ArgDelegate
 	 * @param <T>  subclass of ArgDelegate
@@ -138,7 +161,7 @@ public class ConfigManager {
 	}
 
 	/**
-	 * Delegate method to {@link Config#getDelegateByString(String)}
+	 * Get delegate with string
 	 *
 	 * @param type <b>full name</b> type string including package
 	 * @return delegate or null if not found

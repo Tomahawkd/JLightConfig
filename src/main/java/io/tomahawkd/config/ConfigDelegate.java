@@ -1,7 +1,10 @@
 package io.tomahawkd.config;
 
 /**
- * Arg paring delegate
+ * Config paring delegate
+ *
+ * You may need {@link io.tomahawkd.config.annotation.BelongsTo} to declare
+ * this delegate belongs to which config
  */
 public interface ConfigDelegate {
 
@@ -20,10 +23,6 @@ public interface ConfigDelegate {
 	/**
 	 * post parsing procedure after all arguments is applied to
 	 * correspond fields.
-	 * Use Illegal Argument exception to get message print
-	 *
-	 * @throws IllegalArgumentException throw the exception if the param validation
-	 * failed
 	 */
 	void postParsing();
 

@@ -7,19 +7,40 @@ import java.lang.reflect.Field;
 
 public class AbstractConfigDelegate implements ConfigDelegate {
 
+	/**
+	 * apply self to config
+	 *
+	 * @param config config to apply
+	 */
 	@Override
-	public final void applyDelegate(Config config) {
+	public void applyDelegate(Config config) {
 		config.addDelegate(this);
 	}
 
+	/**
+	 * pre config and apply default settings (which may needs calculation)
+	 */
 	@Override
 	public void preConfig() {
 	}
 
+	/**
+	 * post parsing procedure after all arguments is applied to
+	 * correspond fields.
+	 */
 	@Override
 	public void postParsing() {
 	}
 
+	/**
+	 * Acquire field data. Generally used after {@link Config#getDelegateByString(String)}
+	 * This may usually used when you could not access the type of the class.
+	 *
+	 * @param key field name
+	 * @param type field type
+	 * @param <T> field class type
+	 * @return field data
+	 */
 	@Override
 	@Nullable
 	@SuppressWarnings("unchecked")

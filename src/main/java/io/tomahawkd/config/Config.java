@@ -1,20 +1,23 @@
 package io.tomahawkd.config;
 
+import io.tomahawkd.config.sources.Source;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * Config for configuring preference from commandline.
+ *
+ * You may need {@link io.tomahawkd.config.annotation.SourceFrom} to declare
+ * the config source
  */
 public interface Config {
 
 	/**
-	 * Add new delegate for parsing additional commandline args
+	 * Add new delegate for config
 	 *
-	 * @param delegate arg parsing delegate
+	 * @param delegate delegate
 	 */
 	void addDelegate(@NotNull ConfigDelegate delegate);
 
@@ -29,8 +32,7 @@ public interface Config {
 	 *
 	 * @param type Class of ArgDelegate
 	 * @param <T> subclass of ArgDelegate
-	 * @return delegate
-	 * @throws NoSuchElementException Throws exception when the specific type of delegate is not fond
+	 * @return delegate or null if not found
 	 */
 	@Nullable
 	<T extends ConfigDelegate> T getDelegateByType(@NotNull Class<T> type);
@@ -42,13 +44,22 @@ public interface Config {
 	 * acquirement.
 	 *
 	 * @param type full name type string including package
-	 * @return delegate
+	 * @return delegate or null if not found
 	 */
 	@Nullable
 	ConfigDelegate getDelegateByString(@NotNull String type);
 
 	/**
-	 * Parse commandline args
+	 * Config parse from source.
+	 * You could delegate parse to ConfigDelegate or parse it directly
 	 */
 	void parse();
+
+	/**
+	 * Config parse from source.
+	 * You could delegate parse to ConfigDelegate or parse it directly
+	 *
+	 * @param source config source
+	 */
+	void parse(Source source);
 }

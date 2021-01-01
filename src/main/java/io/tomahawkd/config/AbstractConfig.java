@@ -24,11 +24,23 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		}
 	}
 
+	/**
+	 * Add new delegate for config
+	 *
+	 * @param delegate delegate
+	 */
 	@Override
 	public void addDelegate(@NotNull ConfigDelegate delegate) {
 		delegates.add(delegate);
 	}
 
+	/**
+	 * Get specific delegate by type.
+	 *
+	 * @param type Class of ArgDelegate
+	 * @param <T> subclass of ArgDelegate
+	 * @return delegate or null if not found
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	@Nullable
@@ -40,6 +52,15 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		return null;
 	}
 
+	/**
+	 * Get specific delegate by type string.
+	 * For those which cannot access its type class among different extensions.
+	 * You may use {@link ConfigDelegate#getField(String, Class)} for field data
+	 * acquirement.
+	 *
+	 * @param type full name type string including package
+	 * @return delegate or null if not found
+	 */
 	@Override
 	@Nullable
 	public ConfigDelegate getDelegateByString(@NotNull String type) {
@@ -50,6 +71,9 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		return null;
 	}
 
+	/**
+	 * pre config and apply default settings (which may needs calculation)
+	 */
 	@Override
 	public final void preConfig() {
 		selfPreConfig();
@@ -58,9 +82,17 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		}
 	}
 
+	/**
+	 * For those configs which needs pre-setup, override this function
+	 * to get it setup
+	 */
 	protected void selfPreConfig() {
 	}
 
+	/**
+	 * Config parse from source.
+	 * You could delegate parse to ConfigDelegate or parse it directly
+	 */
 	@Override
 	public final void parse() {
 		preConfig();
@@ -69,8 +101,18 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		postParsing();
 	}
 
-	protected abstract void parse(@NotNull Source source);
+	/**
+	 * Config parse from source.
+	 * You could delegate parse to ConfigDelegate or parse it directly
+	 *
+	 * @param source config source
+	 */
+	public abstract void parse(@NotNull Source source);
 
+	/**
+	 * post parsing procedure after all arguments is applied to
+	 * correspond fields.
+	 */
 	@Override
 	public final void postParsing() {
 		selfPostParsing();
@@ -79,14 +121,27 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 		}
 	}
 
+	/**
+	 * For those configs which needs post-setup, override this function
+	 * to get it setup
+	 */
 	protected void selfPostParsing() {
 	}
 
+	/**
+	 * Get all delegates
+	 * @return delegates list
+	 */
 	@Override
 	public final List<ConfigDelegate> getDelegates() {
 		return delegates;
 	}
 
+	/**
+	 * Initialize all config delegate
+	 *
+	 * @param list config delegate class list
+	 */
 	void initComponents(@NotNull Set<Class<? extends ConfigDelegate>> list) {
 		Objects.requireNonNull(list);
 		for (Class<? extends ConfigDelegate> d : list) {
