@@ -1,0 +1,7 @@
+language: java
+
+env:
+  MAVEN_OPTS=-Xss2m
+
+jdk:
+  - openjdk8
