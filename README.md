@@ -135,7 +135,12 @@ class Test {
     
     // you would get true
     configManager.getConfig(CommandlineConfig.class)
-        .getDelegateByType(TestDelegate.class).isHelp();
+            .getDelegateByType(TestDelegate.class).isHelp();
+
+    // or you could use
+    configManager.getConfig(CommandlineConfig.class)
+            .getDelegateByString("io.tomahawkd.config.delegate.TestDelegate")
+            .getField("help", boolean.class);
   }
 }
 ```
