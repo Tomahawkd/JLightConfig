@@ -34,6 +34,11 @@ public interface ConfigDelegate {
 	 * @param type field type
 	 * @param <T> field class type
 	 * @return field data
+	 * @throws IllegalArgumentException throws if the field:
+	 *  <p>1. is not found
+	 *  <p>2. is not accessible
+	 *  <p>3. which type is not compatible to the argument declares
+	 *
 	 */
-	<T> T getField(String key, Class<T> type);
+	<T> T getField(String key, Class<T> type) throws IllegalArgumentException;
 }
