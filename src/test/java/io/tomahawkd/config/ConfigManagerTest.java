@@ -74,5 +74,9 @@ public class ConfigManagerTest {
 		Assert.assertTrue(
 				configManager.getConfig(CommandlineConfig.class).getDelegateByType(TestDelegate.class).isHelp()
 		);
+		Assert.assertTrue(
+				configManager.getConfig(CommandlineConfig.class).getDelegateByType(TestDelegate.class)
+				.getField("help", boolean.class)
+		);
 	}
 }
