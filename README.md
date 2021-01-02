@@ -24,7 +24,7 @@ of configurations (commandline, files, etc.)
 <dependency>
   <groupId>io.tomahawkd</groupId>
   <artifactId>jlightconfig</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
