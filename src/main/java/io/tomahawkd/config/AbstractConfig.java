@@ -2,7 +2,7 @@ package io.tomahawkd.config;
 
 import io.tomahawkd.config.annotation.HiddenField;
 import io.tomahawkd.config.annotation.SourceFrom;
-import io.tomahawkd.config.sources.Source;
+import io.tomahawkd.config.sources.ConfigSource;
 import io.tomahawkd.config.sources.SourceManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -107,7 +107,7 @@ public abstract class AbstractConfig extends AbstractConfigDelegate implements C
 	 *
 	 * @param source config source
 	 */
-	public abstract void parse(@NotNull Source source);
+	public abstract void parse(@NotNull ConfigSource source);
 
 	/**
 	 * post parsing procedure after all arguments is applied to

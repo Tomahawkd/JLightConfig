@@ -43,14 +43,14 @@ public class SourceManager {
 		// skip initialization if already initialized
 		if (SourceManager.ManagerInstance.INSTANCE.initialized) return;
 
-		ClassManager.createManager(classLoaders).loadClasses(Source.class, null).stream()
+		ClassManager.createManager(classLoaders).loadClasses(ConfigSource.class, null).stream()
 				// filter abstract classes
 				.filter(c -> !Modifier.isAbstract(c.getModifiers()))
 				.map(c -> {
 
 					try {
 						// construct source
-						Constructor<? extends Source> constructor = c.getDeclaredConstructor();
+						Constructor<? extends ConfigSource> constructor = c.getDeclaredConstructor();
 						constructor.setAccessible(true);
 						return constructor.newInstance();
 					} catch (InstantiationException | InvocationTargetException |
@@ -68,7 +68,7 @@ public class SourceManager {
 	private enum ManagerInstance {
 		INSTANCE;
 
-		private final List<Source> sources;
+		private final List<ConfigSource> sources;
 		private boolean initialized = false;
 
 		ManagerInstance() {
@@ -80,7 +80,7 @@ public class SourceManager {
 	 * Get source list
 	 * @return source list
 	 */
-	public List<Source> getSources() {
+	public List<ConfigSource> getSources() {
 		return ManagerInstance.INSTANCE.sources;
 	}
 
@@ -92,7 +92,7 @@ public class SourceManager {
 	 * @return the source or null if not found
 	 */
 	@SuppressWarnings("unchecked")
-	public <T extends Source> T getSource(Class<T> sourceClazz) throws NoSuchElementException {
+	public <T extends ConfigSource> T getSource(Class<T> sourceClazz) throws NoSuchElementException {
 		return (T) ManagerInstance.INSTANCE.sources.stream()
 				.filter(s -> s.getClass().equals(sourceClazz))
 				.findFirst().orElseThrow(() ->

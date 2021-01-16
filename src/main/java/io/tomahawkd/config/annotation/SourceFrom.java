@@ -1,6 +1,6 @@
 package io.tomahawkd.config.annotation;
 
-import io.tomahawkd.config.sources.Source;
+import io.tomahawkd.config.sources.ConfigSource;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SourceFrom {
-	Class<? extends Source> value();
+	Class<? extends ConfigSource> value();
 }
