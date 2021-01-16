@@ -39,14 +39,14 @@ Note: The example below is already integrated in this repo
 Example (with dependency `com.beust.jcommander:1.69`):
 
 ```java
-@SourceFrom(CommandlineSource.class)
+@SourceFrom(CommandlineConfigSource.class)
 public class CommandlineConfig extends AbstractConfig {
 
   @HiddenField
   private JCommander c;
 
   @Override
-  public final void parse(@NotNull Source source) {
+  public final void parse(@NotNull ConfigSource source) {
     c = JCommander.newBuilder().addObject(this)
              .addObject(getDelegates()).build();
 
@@ -94,7 +94,7 @@ public class TestDelegate extends AbstractConfigDelegate {
 
 ### Step 3: Declare the source of your config
 
-- Implements interface `Source` and implements how data could be 
+- Implements interface `ConfigSource` and implements how data could be 
   received.
   
 - Use annotation `SourceFrom` to your Config to bind source and config
@@ -102,7 +102,7 @@ public class TestDelegate extends AbstractConfigDelegate {
 Example:
 
 ```java
-public class CommandlineSource implements Source {
+public class CommandlineConfigSource implements ConfigSource {
 
   private String[] data;
 
@@ -130,7 +130,7 @@ class Test {
     SourceManager sourceManager = SourceManager.get();
     ConfigManager configManager = ConfigManager.get();
 
-    sourceManager.getSource(CommandlineSource.class).setData(args);
+    sourceManager.getSource(CommandlineConfigSource.class).setData(args);
     configManager.parse();
     
     // you would get true
