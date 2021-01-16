@@ -267,3 +267,5 @@ buildNumber.properties
 
 .idea
 *.iml
+
+artifact
