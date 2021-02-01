@@ -145,6 +145,12 @@ class Test {
 }
 ```
 
+## Known Issues
+
+- Test failed in maven  
+  While maven testing the sources, it could report Reflections Scanner was not 
+  configured [ronmamo/reflections (#273)](https://github.com/ronmamo/reflections/issues/273)
+
 ## License
 
 This repo is under Apache v2.0 license
