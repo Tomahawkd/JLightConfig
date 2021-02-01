@@ -1,6 +1,6 @@
 package io.tomahawkd.config.sources;
 
-public interface Source {
+public interface ConfigSource {
 
 	/**
 	 * Supplies config data

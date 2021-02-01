@@ -1,8 +1,8 @@
 package io.tomahawkd.config.commandline;
 
-import io.tomahawkd.config.sources.Source;
+import io.tomahawkd.config.sources.ConfigSource;
 
-public class CommandlineSource implements Source {
+public class CommandlineConfigSource implements ConfigSource {
 
 	private String[] data;
 

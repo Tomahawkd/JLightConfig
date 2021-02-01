@@ -1,6 +1,6 @@
 package io.tomahawkd.config;
 
-import io.tomahawkd.config.sources.Source;
+import io.tomahawkd.config.sources.ConfigSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,5 +61,5 @@ public interface Config {
 	 *
 	 * @param source config source
 	 */
-	void parse(Source source);
+	void parse(ConfigSource source);
 }

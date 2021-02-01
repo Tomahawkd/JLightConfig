@@ -2,7 +2,7 @@ package io.tomahawkd.config;
 
 import io.tomahawkd.config.annotation.BelongsTo;
 import io.tomahawkd.config.commandline.CommandlineConfig;
-import io.tomahawkd.config.commandline.CommandlineSource;
+import io.tomahawkd.config.commandline.CommandlineConfigSource;
 import io.tomahawkd.config.delegate.TestDelegate;
 import io.tomahawkd.config.sources.SourceManager;
 import io.tomahawkd.config.util.ClassManager;
@@ -65,7 +65,7 @@ public class ConfigManagerTest {
 		SourceManager sourceManager = SourceManager.get();
 		ConfigManager configManager = ConfigManager.get();
 
-		sourceManager.getSource(CommandlineSource.class).setData(arg);
+		sourceManager.getSource(CommandlineConfigSource.class).setData(arg);
 		configManager.parse();
 		Assert.assertNotNull(configManager.getConfig(CommandlineConfig.class));
 		Assert.assertNotNull(
