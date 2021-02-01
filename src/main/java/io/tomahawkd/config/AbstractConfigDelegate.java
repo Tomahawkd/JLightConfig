@@ -68,7 +68,7 @@ public class AbstractConfigDelegate implements ConfigDelegate {
 						"Type " + type.getName() + " is not compatible to " +
 								field.getType().getName());
 			}
-		} catch (IllegalAccessException | NoSuchFieldException | IllegalArgumentException e) {
+		} catch (IllegalAccessException | NoSuchFieldException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
